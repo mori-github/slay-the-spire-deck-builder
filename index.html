@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slay the Spire Deck Builder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚔️ Slay the Spire Deck Builder ⚔️</h1>
+            <p class="subtitle">Plan your perfect deck strategy</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="character-select">Character:</label>
+                <select id="character-select">
+                    <option value="ironclad">Ironclad</option>
+                    <option value="silent">Silent</option>
+                    <option value="defect">Defect</option>
+                    <option value="watcher">Watcher</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="rarity-filter">Rarity:</label>
+                <select id="rarity-filter">
+                    <option value="all">All</option>
+                    <option value="Basic">Basic</option>
+                    <option value="Common">Common</option>
+                    <option value="Uncommon">Uncommon</option>
+                    <option value="Rare">Rare</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="type-filter">Type:</label>
+                <select id="type-filter">
+                    <option value="all">All</option>
+                    <option value="Attack">Attack</option>
+                    <option value="Skill">Skill</option>
+                    <option value="Power">Power</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="search-input">Search:</label>
+                <input type="text" id="search-input" placeholder="Search cards...">
+            </div>
+
+            <button id="clear-deck" class="btn-clear">Clear Deck</button>
+        </div>
+
+        <div class="main-content">
+            <div class="card-pool">
+                <h2>Available Cards</h2>
+                <div id="available-cards" class="card-grid"></div>
+            </div>
+
+            <div class="deck-section">
+                <div class="deck-header">
+                    <h2>Your Deck</h2>
+                    <div class="deck-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Cards:</span>
+                            <span id="total-cards" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Avg Cost:</span>
+                            <span id="avg-cost" class="stat-value">0.0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="deck-stats-details">
+                    <div class="stat-group">
+                        <h3>Card Types</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">Attacks:</span>
+                            <span id="attack-count" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Skills:</span>
+                            <span id="skill-count" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Powers:</span>
+                            <span id="power-count" class="stat-value">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-group">
+                        <h3>Rarity</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">Basic:</span>
+                            <span id="basic-count" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Common:</span>
+                            <span id="common-count" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Uncommon:</span>
+                            <span id="uncommon-count" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Rare:</span>
+                            <span id="rare-count" class="stat-value">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="deck-cards" class="deck-cards"></div>
+
+                <div class="deck-actions">
+                    <button id="export-deck" class="btn-export">Export Deck</button>
+                    <button id="import-deck" class="btn-import">Import Deck</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Card Details</h2>
+            <div id="modal-card-details"></div>
+        </div>
+    </div>
+
+    <div id="export-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Export Deck</h2>
+            <p>Copy the text below to save your deck:</p>
+            <textarea id="export-text" readonly></textarea>
+            <button id="copy-export" class="btn-primary">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <div id="import-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Import Deck</h2>
+            <p>Paste your deck code below:</p>
+            <textarea id="import-text" placeholder="Paste deck code here..."></textarea>
+            <button id="confirm-import" class="btn-primary">Import</button>
+        </div>
+    </div>
+
+    <script src="cards.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
