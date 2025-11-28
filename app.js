@@ -37,10 +37,15 @@ class DeckBuilder {
             search: ''
         };
 
+        // Orb tracking for Defect
+        this.orbSlots = 3;
+        this.orbs = [];
+
         this.initializeElements();
         this.attachEventListeners();
         this.renderAvailableCards();
         this.updateDeckDisplay();
+        this.updateOrbTracker();
     }
 
     initializeElements() {
@@ -78,6 +83,19 @@ class DeckBuilder {
         this.copyExportBtn = document.getElementById('copy-export');
         this.confirmImportBtn = document.getElementById('confirm-import');
 
+        // Orb tracker elements
+        this.orbTracker = document.getElementById('orb-tracker');
+        this.orbSlotsContainer = document.getElementById('orb-slots');
+        this.orbSlotCountSpan = document.getElementById('orb-slot-count');
+        this.channelLightningBtn = document.getElementById('channel-lightning');
+        this.channelFrostBtn = document.getElementById('channel-frost');
+        this.channelDarkBtn = document.getElementById('channel-dark');
+        this.channelPlasmaBtn = document.getElementById('channel-plasma');
+        this.evokeOrbBtn = document.getElementById('evoke-orb');
+        this.clearOrbsBtn = document.getElementById('clear-orbs');
+        this.addOrbSlotBtn = document.getElementById('add-orb-slot');
+        this.removeOrbSlotBtn = document.getElementById('remove-orb-slot');
+
         // Close buttons for modals
         this.closeButtons = document.querySelectorAll('.close');
     }
@@ -87,6 +105,7 @@ class DeckBuilder {
         this.characterSelect.addEventListener('change', () => {
             this.currentCharacter = this.characterSelect.value;
             this.renderAvailableCards();
+            this.updateOrbTracker();
         });
 
         this.rarityFilter.addEventListener('change', () => {
@@ -133,6 +152,16 @@ class DeckBuilder {
                 e.target.style.display = 'none';
             }
         });
+
+        // Orb tracker event listeners
+        this.channelLightningBtn.addEventListener('click', () => this.channelOrb('lightning'));
+        this.channelFrostBtn.addEventListener('click', () => this.channelOrb('frost'));
+        this.channelDarkBtn.addEventListener('click', () => this.channelOrb('dark'));
+        this.channelPlasmaBtn.addEventListener('click', () => this.channelOrb('plasma'));
+        this.evokeOrbBtn.addEventListener('click', () => this.evokeOrb());
+        this.clearOrbsBtn.addEventListener('click', () => this.clearOrbs());
+        this.addOrbSlotBtn.addEventListener('click', () => this.adjustOrbSlots(1));
+        this.removeOrbSlotBtn.addEventListener('click', () => this.adjustOrbSlots(-1));
     }
 
     getFilteredCards() {
@@ -424,6 +453,83 @@ class DeckBuilder {
         } catch (error) {
             alert('Error importing deck: ' + error.message);
         }
+    }
+
+    // Orb tracker methods
+    updateOrbTracker() {
+        // Show orb tracker only for Defect
+        if (this.currentCharacter === 'defect') {
+            this.orbTracker.style.display = 'block';
+            this.renderOrbSlots();
+        } else {
+            this.orbTracker.style.display = 'none';
+        }
+    }
+
+    renderOrbSlots() {
+        this.orbSlotsContainer.innerHTML = '';
+        this.orbSlotCountSpan.textContent = this.orbSlots;
+
+        // Render all orb slots
+        for (let i = 0; i < this.orbSlots; i++) {
+            const slotDiv = document.createElement('div');
+            slotDiv.className = 'orb-slot';
+
+            if (this.orbs[i]) {
+                const orbType = this.orbs[i];
+                slotDiv.classList.add('filled', orbType);
+
+                // Add emoji for each orb type
+                const orbEmojis = {
+                    lightning: '⚡',
+                    frost: '❄️',
+                    dark: '🌑',
+                    plasma: '⚛️'
+                };
+                slotDiv.textContent = orbEmojis[orbType] || '';
+            }
+
+            this.orbSlotsContainer.appendChild(slotDiv);
+        }
+    }
+
+    channelOrb(orbType) {
+        if (this.orbs.length >= this.orbSlots) {
+            // Evoke the rightmost orb when slots are full
+            this.orbs.shift();
+        }
+
+        // Channel the new orb
+        this.orbs.push(orbType);
+        this.renderOrbSlots();
+    }
+
+    evokeOrb() {
+        if (this.orbs.length > 0) {
+            // Evoke the rightmost orb
+            this.orbs.shift();
+            this.renderOrbSlots();
+        }
+    }
+
+    clearOrbs() {
+        this.orbs = [];
+        this.renderOrbSlots();
+    }
+
+    adjustOrbSlots(amount) {
+        this.orbSlots += amount;
+
+        // Minimum 0 slots, maximum 10 slots
+        if (this.orbSlots < 0) this.orbSlots = 0;
+        if (this.orbSlots > 10) this.orbSlots = 10;
+
+        // Remove orbs if we have more orbs than slots
+        while (this.orbs.length > this.orbSlots) {
+            this.orbs.shift();
+        }
+
+        this.renderOrbSlots();
     }
 }
 

@@ -468,6 +468,200 @@ h3 {
     background: rgba(255, 215, 0, 0.5);
 }
 
+/* Orb Tracker Styles */
+.orb-tracker {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 2px solid rgba(59, 130, 246, 0.3);
+}
+
+.orb-tracker h3 {
+    color: #60a5fa;
+    font-size: 1.1em;
+    margin-bottom: 12px;
+    border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+    padding-bottom: 8px;
+}
+
+.orb-controls {
+    margin-bottom: 15px;
+}
+
+.orb-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-orb {
+    flex: 1;
+    min-width: 100px;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    border: 2px solid;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-orb:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-orb-lightning {
+    border-color: #fbbf24;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.2) 100%);
+}
+
+.btn-orb-lightning:hover {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.4) 0%, rgba(245, 158, 11, 0.4) 100%);
+}
+
+.btn-orb-frost {
+    border-color: #60a5fa;
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.2) 0%, rgba(37, 99, 235, 0.2) 100%);
+}
+
+.btn-orb-frost:hover {
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.4) 0%, rgba(37, 99, 235, 0.4) 100%);
+}
+
+.btn-orb-dark {
+    border-color: #a78bfa;
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.2) 0%, rgba(109, 40, 217, 0.2) 100%);
+}
+
+.btn-orb-dark:hover {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.4) 0%, rgba(109, 40, 217, 0.4) 100%);
+}
+
+.btn-orb-plasma {
+    border-color: #34d399;
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%);
+}
+
+.btn-orb-plasma:hover {
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.4) 0%, rgba(16, 185, 129, 0.4) 100%);
+}
+
+.orb-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-orb-action {
+    flex: 1;
+    padding: 6px 12px;
+    font-size: 0.85em;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-orb-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.orb-slots {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    min-height: 70px;
+    align-items: center;
+    justify-content: center;
+}
+
+.orb-slot {
+    width: 50px;
+    height: 50px;
+    border: 3px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    background: rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+}
+
+.orb-slot.filled {
+    border-style: solid;
+    animation: orbPulse 2s ease-in-out infinite;
+}
+
+.orb-slot.lightning {
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.4) 0%, rgba(245, 158, 11, 0.2) 100%);
+    border-color: #fbbf24;
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+}
+
+.orb-slot.frost {
+    background: radial-gradient(circle, rgba(96, 165, 250, 0.4) 0%, rgba(37, 99, 235, 0.2) 100%);
+    border-color: #60a5fa;
+    box-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
+}
+
+.orb-slot.dark {
+    background: radial-gradient(circle, rgba(167, 139, 250, 0.4) 0%, rgba(109, 40, 217, 0.2) 100%);
+    border-color: #a78bfa;
+    box-shadow: 0 0 15px rgba(167, 139, 250, 0.5);
+}
+
+.orb-slot.plasma {
+    background: radial-gradient(circle, rgba(52, 211, 153, 0.4) 0%, rgba(16, 185, 129, 0.2) 100%);
+    border-color: #34d399;
+    box-shadow: 0 0 15px rgba(52, 211, 153, 0.5);
+}
+
+@keyframes orbPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.orb-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #b0b0b0;
+    font-size: 0.9em;
+}
+
+.orb-info span {
+    flex: 1;
+}
+
+.btn-orb-small {
+    padding: 4px 10px;
+    font-size: 0.85em;
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-orb-small:hover {
+    transform: translateY(-1px);
+}
+
 @media (max-width: 1200px) {
     .main-content {
         grid-template-columns: 1fr;
