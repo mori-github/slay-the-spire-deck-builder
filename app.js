@@ -1,4 +1,32 @@
 // Slay the Spire Deck Builder - Main Application Logic
+
+// Starter decks for each character
+const STARTER_DECKS = {
+    ironclad: {
+        'Strike': 5,
+        'Defend': 4,
+        'Bash': 1
+    },
+    silent: {
+        'Strike': 5,
+        'Defend': 5,
+        'Survivor': 1,
+        'Neutralize': 1
+    },
+    defect: {
+        'Strike': 4,
+        'Defend': 4,
+        'Zap': 1,
+        'Dualcast': 1
+    },
+    watcher: {
+        'Strike': 4,
+        'Defend': 4,
+        'Eruption': 1,
+        'Vigilance': 1
+    }
+};
+
 class DeckBuilder {
     constructor() {
         this.currentCharacter = 'ironclad';
@@ -21,6 +49,7 @@ class DeckBuilder {
         this.rarityFilter = document.getElementById('rarity-filter');
         this.typeFilter = document.getElementById('type-filter');
         this.searchInput = document.getElementById('search-input');
+        this.loadStarterBtn = document.getElementById('load-starter');
         this.clearDeckBtn = document.getElementById('clear-deck');
 
         // Display areas
@@ -76,6 +105,8 @@ class DeckBuilder {
         });
 
         // Deck actions
+        this.loadStarterBtn.addEventListener('click', () => this.loadStarterDeck());
+
         this.clearDeckBtn.addEventListener('click', () => {
             if (confirm('Are you sure you want to clear your deck?')) {
                 this.deck = {};
@@ -178,6 +209,21 @@ class DeckBuilder {
         }
         this.updateDeckDisplay();
         this.renderAvailableCards(); // Update to show count badges
+    }
+
+    loadStarterDeck() {
+        // Get the starter deck for current character
+        const starterDeck = STARTER_DECKS[this.currentCharacter];
+
+        if (!starterDeck) {
+            alert('No starter deck found for this character');
+            return;
+        }
+
+        // Clear current deck and load starter deck
+        this.deck = { ...starterDeck };
+        this.updateDeckDisplay();
+        this.renderAvailableCards();
     }
 
     updateDeckDisplay() {
