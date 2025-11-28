@@ -205,10 +205,19 @@ class DeckBuilder {
         const count = this.deck[card.name] || 0;
         const countBadge = count > 0 ? `<span class="card-count">${count}</span>` : '';
 
+        // Calculate orb bonus damage for Defect Attack cards
+        let orbDamageBonus = '';
+        if (this.currentCharacter === 'defect' && card.type === 'Attack' && this.orbs.length > 0) {
+            const orbDamage = this.calculateOrbDamage();
+            if (orbDamage > 0) {
+                orbDamageBonus = `<span class="orb-damage-bonus">+${orbDamage} ⚡</span>`;
+            }
+        }
+
         cardDiv.innerHTML = `
             ${countBadge}
             <div class="card-header">
-                <span class="card-name">${card.name}</span>
+                <span class="card-name">${card.name}${orbDamageBonus}</span>
                 <span class="card-cost">${card.cost}</span>
             </div>
             <span class="card-type ${card.type}">${card.type}</span>
@@ -294,10 +303,19 @@ class DeckBuilder {
         const cardDiv = document.createElement('div');
         cardDiv.className = `deck-card rarity-${card.rarity}`;
 
+        // Calculate orb bonus damage for Defect Attack cards
+        let orbDamageBonus = '';
+        if (this.currentCharacter === 'defect' && card.type === 'Attack' && this.orbs.length > 0) {
+            const orbDamage = this.calculateOrbDamage();
+            if (orbDamage > 0) {
+                orbDamageBonus = ` <span class="orb-damage-bonus">+${orbDamage}</span>`;
+            }
+        }
+
         cardDiv.innerHTML = `
             <div class="deck-card-info">
                 <span class="deck-card-cost">${card.cost}</span>
-                <span class="deck-card-name">${card.name}</span>
+                <span class="deck-card-name">${card.name}${orbDamageBonus}</span>
                 <span class="deck-card-type ${card.type}">${card.type}</span>
             </div>
             <div class="deck-card-actions">
@@ -466,6 +484,23 @@ class DeckBuilder {
         }
     }
 
+    calculateOrbDamage() {
+        // Calculate passive damage from all orbs
+        let totalDamage = 0;
+        this.orbs.forEach(orbType => {
+            switch(orbType) {
+                case 'lightning':
+                    totalDamage += 3; // Lightning passive damage
+                    break;
+                case 'dark':
+                    totalDamage += 6; // Dark passive damage
+                    break;
+                // Frost and Plasma don't add damage
+            }
+        });
+        return totalDamage;
+    }
+
     renderOrbSlots() {
         this.orbSlotsContainer.innerHTML = '';
         this.orbSlotCountSpan.textContent = this.orbSlots;
@@ -502,6 +537,8 @@ class DeckBuilder {
         // Channel the new orb
         this.orbs.push(orbType);
         this.renderOrbSlots();
+        this.renderAvailableCards(); // Update damage bonuses
+        this.updateDeckDisplay(); // Update deck damage bonuses
     }
 
     evokeOrb() {
@@ -509,12 +546,16 @@ class DeckBuilder {
             // Evoke the rightmost orb
             this.orbs.shift();
             this.renderOrbSlots();
+            this.renderAvailableCards(); // Update damage bonuses
+            this.updateDeckDisplay(); // Update deck damage bonuses
         }
     }
 
     clearOrbs() {
         this.orbs = [];
         this.renderOrbSlots();
+        this.renderAvailableCards(); // Update damage bonuses
+        this.updateDeckDisplay(); // Update deck damage bonuses
     }
 
     adjustOrbSlots(amount) {
