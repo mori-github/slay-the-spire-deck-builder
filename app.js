@@ -412,6 +412,13 @@ class DeckBuilder {
             character: this.currentCharacter,
             deck: this.deck
         };
+
+        // Add orb data for Defect
+        if (this.currentCharacter === 'defect') {
+            exportData.orbSlots = this.orbSlots;
+            exportData.orbs = this.orbs;
+        }
+
         const exportText = JSON.stringify(exportData, null, 2);
         document.getElementById('export-text').value = exportText;
         this.exportModal.style.display = 'block';
@@ -463,8 +470,19 @@ class DeckBuilder {
             this.characterSelect.value = this.currentCharacter;
             this.deck = importData.deck;
 
+            // Restore orb data for Defect
+            if (importData.character === 'defect') {
+                if (importData.orbSlots !== undefined) {
+                    this.orbSlots = importData.orbSlots;
+                }
+                if (importData.orbs !== undefined) {
+                    this.orbs = importData.orbs;
+                }
+            }
+
             this.renderAvailableCards();
             this.updateDeckDisplay();
+            this.updateOrbTracker();
             this.importModal.style.display = 'none';
 
             alert('Deck imported successfully!');
