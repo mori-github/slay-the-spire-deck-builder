@@ -105,6 +105,10 @@ class DeckBuilder {
         this.totalDamageSpan = document.getElementById('total-damage');
         this.totalBlockSpan = document.getElementById('total-block');
         this.totalEnergySpan = document.getElementById('total-energy');
+        this.orbPassiveDamageSpan = document.getElementById('orb-passive-damage');
+        this.orbDamageStat = document.getElementById('orb-damage-stat');
+        this.handOrbsDisplay = document.getElementById('hand-orbs-display');
+        this.handOrbsList = document.getElementById('hand-orbs-list');
         this.handEffectsDiv = document.getElementById('hand-effects');
         this.clearHandBtn = document.getElementById('clear-hand');
 
@@ -572,6 +576,7 @@ class DeckBuilder {
         this.renderOrbSlots();
         this.renderAvailableCards(); // Update damage bonuses
         this.updateDeckDisplay(); // Update deck damage bonuses
+        this.updateHandSimulator(); // Update hand simulator orb display
     }
 
     evokeOrb() {
@@ -581,6 +586,7 @@ class DeckBuilder {
             this.renderOrbSlots();
             this.renderAvailableCards(); // Update damage bonuses
             this.updateDeckDisplay(); // Update deck damage bonuses
+            this.updateHandSimulator(); // Update hand simulator orb display
         }
     }
 
@@ -589,6 +595,7 @@ class DeckBuilder {
         this.renderOrbSlots();
         this.renderAvailableCards(); // Update damage bonuses
         this.updateDeckDisplay(); // Update deck damage bonuses
+        this.updateHandSimulator(); // Update hand simulator orb display
     }
 
     adjustOrbSlots(amount) {
@@ -623,6 +630,14 @@ class DeckBuilder {
     }
 
     updateHandSimulator() {
+        // Render orb display for Defect
+        if (this.currentCharacter === 'defect' && this.orbs.length > 0) {
+            this.handOrbsDisplay.style.display = 'flex';
+            this.renderHandOrbs();
+        } else {
+            this.handOrbsDisplay.style.display = 'none';
+        }
+
         // Render hand cards
         this.simulatedHandContainer.innerHTML = '';
 
@@ -654,6 +669,31 @@ class DeckBuilder {
 
         // Calculate and display stats
         this.calculateHandStats();
+    }
+
+    renderHandOrbs() {
+        this.handOrbsList.innerHTML = '';
+
+        const orbEmojis = {
+            lightning: '⚡',
+            frost: '❄️',
+            dark: '🌑',
+            plasma: '⚛️'
+        };
+
+        const orbNames = {
+            lightning: 'Lightning',
+            frost: 'Frost',
+            dark: 'Dark',
+            plasma: 'Plasma'
+        };
+
+        this.orbs.forEach(orbType => {
+            const orbDiv = document.createElement('div');
+            orbDiv.className = `hand-orb-item ${orbType}`;
+            orbDiv.innerHTML = `${orbEmojis[orbType]} ${orbNames[orbType]}`;
+            this.handOrbsList.appendChild(orbDiv);
+        });
     }
 
     calculateHandStats() {
@@ -715,6 +755,14 @@ class DeckBuilder {
         this.totalDamageSpan.textContent = totalDamage;
         this.totalBlockSpan.textContent = totalBlock;
         this.totalEnergySpan.textContent = totalEnergy;
+
+        // Show orb passive damage stat for Defect
+        if (this.currentCharacter === 'defect' && orbDamage > 0) {
+            this.orbDamageStat.style.display = 'flex';
+            this.orbPassiveDamageSpan.textContent = orbDamage;
+        } else {
+            this.orbDamageStat.style.display = 'none';
+        }
 
         // Display effects
         this.handEffectsDiv.innerHTML = '';

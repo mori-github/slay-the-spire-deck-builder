@@ -138,6 +138,10 @@
                 <div id="hand-simulator" class="hand-simulator">
                     <h3>Hand Simulator</h3>
                     <p class="simulator-hint">Click cards in your deck to add them to your hand</p>
+                    <div id="hand-orbs-display" class="hand-orbs-display" style="display: none;">
+                        <div class="hand-orbs-label">Active Orbs:</div>
+                        <div id="hand-orbs-list" class="hand-orbs-list"></div>
+                    </div>
                     <div id="simulated-hand" class="simulated-hand"></div>
                     <div class="hand-stats">
                         <div class="hand-stat-group">
@@ -155,6 +159,11 @@
                                 <span class="hand-stat-icon">⚡</span>
                                 <span class="hand-stat-label">Energy Cost:</span>
                                 <span id="total-energy" class="hand-stat-value">0</span>
+                            </div>
+                            <div id="orb-damage-stat" class="hand-stat-item" style="display: none;">
+                                <span class="hand-stat-icon">💫</span>
+                                <span class="hand-stat-label">Orb Passive Damage:</span>
+                                <span id="orb-passive-damage" class="hand-stat-value">0</span>
                             </div>
                         </div>
                         <div id="hand-effects" class="hand-effects"></div>
