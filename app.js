@@ -41,11 +41,15 @@ class DeckBuilder {
         this.orbSlots = 3;
         this.orbs = [];
 
+        // Hand simulator
+        this.simulatedHand = [];
+
         this.initializeElements();
         this.attachEventListeners();
         this.renderAvailableCards();
         this.updateDeckDisplay();
         this.updateOrbTracker();
+        this.updateHandSimulator();
     }
 
     initializeElements() {
@@ -95,6 +99,14 @@ class DeckBuilder {
         this.clearOrbsBtn = document.getElementById('clear-orbs');
         this.addOrbSlotBtn = document.getElementById('add-orb-slot');
         this.removeOrbSlotBtn = document.getElementById('remove-orb-slot');
+
+        // Hand simulator elements
+        this.simulatedHandContainer = document.getElementById('simulated-hand');
+        this.totalDamageSpan = document.getElementById('total-damage');
+        this.totalBlockSpan = document.getElementById('total-block');
+        this.totalEnergySpan = document.getElementById('total-energy');
+        this.handEffectsDiv = document.getElementById('hand-effects');
+        this.clearHandBtn = document.getElementById('clear-hand');
 
         // Close buttons for modals
         this.closeButtons = document.querySelectorAll('.close');
@@ -162,6 +174,9 @@ class DeckBuilder {
         this.clearOrbsBtn.addEventListener('click', () => this.clearOrbs());
         this.addOrbSlotBtn.addEventListener('click', () => this.adjustOrbSlots(1));
         this.removeOrbSlotBtn.addEventListener('click', () => this.adjustOrbSlots(-1));
+
+        // Hand simulator event listeners
+        this.clearHandBtn.addEventListener('click', () => this.clearHand());
     }
 
     getFilteredCards() {
@@ -330,7 +345,7 @@ class DeckBuilder {
             this.removeCardFromDeck(card.name);
         });
 
-        cardDiv.addEventListener('click', () => this.showCardDetails(card));
+        cardDiv.addEventListener('click', () => this.addCardToHand(card));
 
         return cardDiv;
     }
@@ -589,6 +604,198 @@ class DeckBuilder {
         }
 
         this.renderOrbSlots();
+    }
+
+    // Hand simulator methods
+    addCardToHand(card) {
+        this.simulatedHand.push(card);
+        this.updateHandSimulator();
+    }
+
+    removeCardFromHand(index) {
+        this.simulatedHand.splice(index, 1);
+        this.updateHandSimulator();
+    }
+
+    clearHand() {
+        this.simulatedHand = [];
+        this.updateHandSimulator();
+    }
+
+    updateHandSimulator() {
+        // Render hand cards
+        this.simulatedHandContainer.innerHTML = '';
+
+        if (this.simulatedHand.length === 0) {
+            this.simulatedHandContainer.classList.add('empty');
+            this.simulatedHandContainer.innerHTML = '<p style="color: #6b7280; font-style: italic;">Click cards in your deck to add them</p>';
+        } else {
+            this.simulatedHandContainer.classList.remove('empty');
+
+            this.simulatedHand.forEach((card, index) => {
+                const handCardDiv = document.createElement('div');
+                handCardDiv.className = `hand-card rarity-${card.rarity}`;
+
+                handCardDiv.innerHTML = `
+                    <span class="hand-card-cost">${card.cost}</span>
+                    <span class="hand-card-name">${card.name}</span>
+                    <span class="hand-card-remove">×</span>
+                `;
+
+                const removeBtn = handCardDiv.querySelector('.hand-card-remove');
+                removeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.removeCardFromHand(index);
+                });
+
+                this.simulatedHandContainer.appendChild(handCardDiv);
+            });
+        }
+
+        // Calculate and display stats
+        this.calculateHandStats();
+    }
+
+    calculateHandStats() {
+        let totalDamage = 0;
+        let totalBlock = 0;
+        let totalEnergy = 0;
+        const effects = [];
+
+        // Get orb damage bonus for Defect
+        const orbDamage = this.currentCharacter === 'defect' ? this.calculateOrbDamage() : 0;
+
+        this.simulatedHand.forEach(card => {
+            // Calculate energy cost
+            if (card.cost !== 'X') {
+                totalEnergy += parseInt(card.cost);
+            }
+
+            // Parse card description for damage and block
+            const desc = card.description.toLowerCase();
+
+            // Extract damage (looking for "deal X damage")
+            const damageMatch = desc.match(/deal (\d+) damage/);
+            if (damageMatch) {
+                let damage = parseInt(damageMatch[1]);
+
+                // Add orb damage bonus for Defect attacks
+                if (this.currentCharacter === 'defect' && card.type === 'Attack') {
+                    damage += orbDamage;
+                }
+
+                // Check for multiple hits
+                const timesMatch = desc.match(/(\d+) times/);
+                if (timesMatch) {
+                    damage *= parseInt(timesMatch[1]);
+                }
+
+                totalDamage += damage;
+            }
+
+            // Extract block (looking for "gain X block")
+            const blockMatch = desc.match(/gain (\d+) block/);
+            if (blockMatch) {
+                let block = parseInt(blockMatch[1]);
+
+                // Check for multiple applications
+                const timesMatch = desc.match(/(\d+) times/);
+                if (timesMatch && desc.includes('block') && desc.includes('times')) {
+                    block *= parseInt(timesMatch[1]);
+                }
+
+                totalBlock += block;
+            }
+
+            // Parse special effects
+            this.parseCardEffects(card, effects);
+        });
+
+        // Update UI
+        this.totalDamageSpan.textContent = totalDamage;
+        this.totalBlockSpan.textContent = totalBlock;
+        this.totalEnergySpan.textContent = totalEnergy;
+
+        // Display effects
+        this.handEffectsDiv.innerHTML = '';
+        if (effects.length > 0) {
+            effects.forEach(effect => {
+                const effectSpan = document.createElement('span');
+                effectSpan.className = 'hand-effect';
+                effectSpan.textContent = effect;
+                this.handEffectsDiv.appendChild(effectSpan);
+            });
+        }
+    }
+
+    parseCardEffects(card, effects) {
+        const desc = card.description.toLowerCase();
+
+        // Draw cards
+        const drawMatch = desc.match(/draw (\d+) card/);
+        if (drawMatch) {
+            effects.push(`Draw ${drawMatch[1]} card(s)`);
+        }
+
+        // Gain energy
+        const energyMatch = desc.match(/gain (\d+) energy/);
+        if (energyMatch) {
+            effects.push(`Gain ${energyMatch[1]} energy`);
+        }
+
+        // Apply status effects
+        if (desc.includes('vulnerable')) {
+            const vulnMatch = desc.match(/(\d+) vulnerable/);
+            if (vulnMatch) {
+                effects.push(`Apply ${vulnMatch[1]} Vulnerable`);
+            }
+        }
+
+        if (desc.includes('weak')) {
+            const weakMatch = desc.match(/(\d+) weak/);
+            if (weakMatch) {
+                effects.push(`Apply ${weakMatch[1]} Weak`);
+            }
+        }
+
+        if (desc.includes('strength')) {
+            const strMatch = desc.match(/(?:gain |lose )?(\d+) strength/);
+            if (strMatch) {
+                if (desc.includes('gain')) {
+                    effects.push(`Gain ${strMatch[1]} Strength`);
+                } else if (desc.includes('lose')) {
+                    effects.push(`Lose ${strMatch[1]} Strength`);
+                }
+            }
+        }
+
+        if (desc.includes('poison')) {
+            const poisonMatch = desc.match(/(?:apply )?(\d+) poison/);
+            if (poisonMatch) {
+                effects.push(`Apply ${poisonMatch[1]} Poison`);
+            }
+        }
+
+        // Channel orbs (for Defect)
+        if (desc.includes('channel')) {
+            if (desc.includes('lightning')) {
+                effects.push('Channel Lightning');
+            }
+            if (desc.includes('frost')) {
+                effects.push('Channel Frost');
+            }
+            if (desc.includes('dark')) {
+                effects.push('Channel Dark');
+            }
+            if (desc.includes('plasma')) {
+                effects.push('Channel Plasma');
+            }
+        }
+
+        // Exhaust
+        if (desc.includes('exhaust') && !desc.includes('exhaust a card')) {
+            effects.push('Exhaust');
+        }
     }
 }
 

@@ -686,6 +686,175 @@ h3 {
     transform: translateY(-1px);
 }
 
+/* Hand Simulator Styles */
+.hand-simulator {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 2px solid rgba(168, 85, 247, 0.3);
+}
+
+.hand-simulator h3 {
+    color: #a78bfa;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    border-bottom: 2px solid rgba(168, 85, 247, 0.3);
+    padding-bottom: 8px;
+}
+
+.simulator-hint {
+    color: #9ca3af;
+    font-size: 0.85em;
+    margin-bottom: 12px;
+    font-style: italic;
+}
+
+.simulated-hand {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-height: 60px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    align-items: center;
+}
+
+.simulated-hand.empty {
+    justify-content: center;
+    align-items: center;
+}
+
+.hand-card {
+    background: linear-gradient(135deg, rgba(50, 50, 70, 0.8) 0%, rgba(30, 30, 50, 0.8) 100%);
+    border-radius: 6px;
+    padding: 8px 12px;
+    border: 2px solid;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.hand-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hand-card.rarity-Basic {
+    border-color: #888;
+}
+
+.hand-card.rarity-Common {
+    border-color: #4a9eff;
+}
+
+.hand-card.rarity-Uncommon {
+    border-color: #ffd700;
+}
+
+.hand-card.rarity-Rare {
+    border-color: #ff6b6b;
+}
+
+.hand-card-name {
+    font-weight: bold;
+    color: #fff;
+}
+
+.hand-card-cost {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 0.85em;
+}
+
+.hand-card-remove {
+    margin-left: 4px;
+    color: #ef4444;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.hand-card-remove:hover {
+    color: #dc2626;
+}
+
+.hand-stats {
+    margin-bottom: 12px;
+}
+
+.hand-stat-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.hand-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+}
+
+.hand-stat-icon {
+    font-size: 1.2em;
+}
+
+.hand-stat-label {
+    color: #b0b0b0;
+    font-size: 0.85em;
+    flex: 1;
+}
+
+.hand-stat-value {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.hand-effects {
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    min-height: 40px;
+    color: #b0b0b0;
+    font-size: 0.9em;
+}
+
+.hand-effects:empty::before {
+    content: "No special effects";
+    color: #6b7280;
+    font-style: italic;
+}
+
+.hand-effect {
+    display: inline-block;
+    margin: 2px 4px;
+    padding: 4px 8px;
+    background: rgba(168, 85, 247, 0.2);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    border-radius: 4px;
+    color: #c4b5fd;
+    font-size: 0.85em;
+}
+
+.btn-clear-hand {
+    width: 100%;
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+    padding: 8px;
+    font-size: 0.9em;
+}
+
 @media (max-width: 1200px) {
     .main-content {
         grid-template-columns: 1fr;

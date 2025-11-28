@@ -135,6 +135,33 @@
                     </div>
                 </div>
 
+                <div id="hand-simulator" class="hand-simulator">
+                    <h3>Hand Simulator</h3>
+                    <p class="simulator-hint">Click cards in your deck to add them to your hand</p>
+                    <div id="simulated-hand" class="simulated-hand"></div>
+                    <div class="hand-stats">
+                        <div class="hand-stat-group">
+                            <div class="hand-stat-item">
+                                <span class="hand-stat-icon">⚔️</span>
+                                <span class="hand-stat-label">Total Damage:</span>
+                                <span id="total-damage" class="hand-stat-value">0</span>
+                            </div>
+                            <div class="hand-stat-item">
+                                <span class="hand-stat-icon">🛡️</span>
+                                <span class="hand-stat-label">Total Block:</span>
+                                <span id="total-block" class="hand-stat-value">0</span>
+                            </div>
+                            <div class="hand-stat-item">
+                                <span class="hand-stat-icon">⚡</span>
+                                <span class="hand-stat-label">Energy Cost:</span>
+                                <span id="total-energy" class="hand-stat-value">0</span>
+                            </div>
+                        </div>
+                        <div id="hand-effects" class="hand-effects"></div>
+                    </div>
+                    <button id="clear-hand" class="btn-clear-hand">Clear Hand</button>
+                </div>
+
                 <div id="deck-cards" class="deck-cards"></div>
 
                 <div class="deck-actions">
