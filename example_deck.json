@@ -1,0 +1,71 @@
+{
+  "name": "Starter Deck",
+  "cards": [
+    {
+      "name": "Strike",
+      "cost": 1,
+      "card_type": "Attack",
+      "rarity": "Starter",
+      "description": "Deal 6 damage.",
+      "damage": 6,
+      "block": 0,
+      "upgradeable": true,
+      "upgraded": false
+    },
+    {
+      "name": "Strike",
+      "cost": 1,
+      "card_type": "Attack",
+      "rarity": "Starter",
+      "description": "Deal 6 damage.",
+      "damage": 6,
+      "block": 0,
+      "upgradeable": true,
+      "upgraded": false
+    },
+    {
+      "name": "Strike",
+      "cost": 1,
+      "card_type": "Attack",
+      "rarity": "Starter",
+      "description": "Deal 6 damage.",
+      "damage": 6,
+      "block": 0,
+      "upgradeable": true,
+      "upgraded": false
+    },
+    {
+      "name": "Defend",
+      "cost": 1,
+      "card_type": "Skill",
+      "rarity": "Starter",
+      "description": "Gain 5 Block.",
+      "damage": 0,
+      "block": 5,
+      "upgradeable": true,
+      "upgraded": false
+    },
+    {
+      "name": "Defend",
+      "cost": 1,
+      "card_type": "Skill",
+      "rarity": "Starter",
+      "description": "Gain 5 Block.",
+      "damage": 0,
+      "block": 5,
+      "upgradeable": true,
+      "upgraded": false
+    },
+    {
+      "name": "Defend",
+      "cost": 1,
+      "card_type": "Skill",
+      "rarity": "Starter",
+      "description": "Gain 5 Block.",
+      "damage": 0,
+      "block": 5,
+      "upgradeable": true,
+      "upgraded": false
+    }
+  ]
+}
